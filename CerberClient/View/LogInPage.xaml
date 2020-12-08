@@ -104,6 +104,18 @@
                             />
                     </Grid>
                 </Grid>
+
+                <Popup Grid.Column="1"  
+                       PopupAnimation="Fade"
+                       Placement="Center"
+                       IsOpen="{Binding IsOpen}" 
+                       Width="320"
+                       Height="240">
+                    <Grid>
+                        <Image Stretch="Fill" Source="{Binding CameraView}"/>
+                    </Grid>
+                </Popup>
+
             </Grid>
             
         </Grid>
