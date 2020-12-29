@@ -15,6 +15,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.IO;
 using System.Threading;
+using CerberClient.Model;
 
 namespace CerberClient.ViewModel
 {
@@ -28,14 +29,14 @@ namespace CerberClient.ViewModel
         private Image<Bgr, Byte> currentFrame = null;
         private CascadeClassifier classifier = new CascadeClassifier("haarcascade_frontalface_alt.xml");
         private bool isTrained = false;
-        private bool isRecognized = false;
         private List<Image<Bgr, Byte>> trainedFaces = new List<Image<Bgr, byte>>();
         private List<int> personLabels = new List<int>();
         private List<string> personsNames = new List<string>();
-        private static int imagesCount = 0;
         private Mat frame = new Mat();
         private DispatcherTimer timer;
         private EigenFaceRecognizer recognizer;
+        private int numOfRecognisedFaces = 0;
+        private int numOfLoops = 0;
 
         private string login;
         private string password;
@@ -113,6 +114,7 @@ namespace CerberClient.ViewModel
                     goToApp = new RelayCommand(
                         x => {
                             IsOpen = true;
+                            User.userLogin = Login;
                             OpenCamera();
                             //mainViewModel.SwapPage("app");
                         },
@@ -126,6 +128,24 @@ namespace CerberClient.ViewModel
 
         #region Face Detection
 
+        private void isFaceRecognized()
+        {
+            timer.Stop();
+            timer = null;
+            videoCapture.Dispose();
+            videoCapture = null;
+
+            if (numOfRecognisedFaces >= 35)
+            {
+                MessageBox.Show("Rozpoznano");
+                mainViewModel.SwapPage("app");
+            }
+            else
+            {
+                MessageBox.Show("Nie rozpoznano");
+            }
+            IsOpen = false;
+        }
 
         // Włączenie kamery
         private void OpenCamera()
@@ -134,6 +154,7 @@ namespace CerberClient.ViewModel
                 videoCapture.Dispose();
             videoCapture = new Capture();
             TrainImages();
+            numOfLoops = 0;
             timer = new DispatcherTimer();
             timer.Tick += Timer_Tick;
             timer.Interval = new TimeSpan(0, 0, 0, 0, 1);
@@ -143,6 +164,7 @@ namespace CerberClient.ViewModel
         // Wykrywanie i rozpoznawanie twarzy oraz przesyłanie obrazu do obiektu Image
         private void Timer_Tick(object sender, EventArgs e)
         {
+            numOfLoops++;
             if (videoCapture != null && videoCapture.Ptr != IntPtr.Zero)
             {
                 videoCapture.Retrieve(frame, 0);
@@ -173,7 +195,7 @@ namespace CerberClient.ViewModel
                             CvInvoke.PutText(currentFrame, personsNames[result.Label], new System.Drawing.Point(face.X - 2, face.Y - 2),
                                 FontFace.HersheyComplex, 1.0, new Bgr(System.Drawing.Color.Orange).MCvScalar);
                             CvInvoke.Rectangle(currentFrame, face, new Bgr(System.Drawing.Color.Green).MCvScalar, 2);
-                            isRecognized = true;
+                            numOfRecognisedFaces++;
                         }
                         // Nie rozpoznało osoby ze zdjęcia
                         else
@@ -181,13 +203,17 @@ namespace CerberClient.ViewModel
                             CvInvoke.PutText(currentFrame, "Unknown", new System.Drawing.Point(face.X - 2, face.Y - 2),
                                 FontFace.HersheyComplex, 1.0, new Bgr(System.Drawing.Color.Orange).MCvScalar);
                             CvInvoke.Rectangle(currentFrame, face, new Bgr(System.Drawing.Color.Red).MCvScalar, 2);
-                            isRecognized = false;
                         }
                     }
                 }
 
             }
             CameraView = ToBitmapSource(currentFrame);
+
+            if(numOfLoops == 50)
+            {
+                isFaceRecognized();
+            }
         }
 
         // Trenowanie klasyfikatora za pomocą zdjęcia użytkownika
@@ -212,7 +238,6 @@ namespace CerberClient.ViewModel
                     personLabels.Add(imagesCount);
                     string name = Login;
                     personsNames.Add(name);
-                    imagesCount = imagesCount + 1;
                 }
 
                 recognizer = new EigenFaceRecognizer(imagesCount, tresholds);

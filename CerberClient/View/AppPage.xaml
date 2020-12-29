@@ -43,8 +43,12 @@
 
             <Grid Grid.Row="1">
                 <TextBlock 
-                    Text="Aplikacja"
+                    Text="Aplikacja" HorizontalAlignment="Left"
                     />
+
+                <Image Source="{Binding CameraView}" Height="75" Width="75"
+                       HorizontalAlignment="Right"
+                       />
 
             </Grid>
 
