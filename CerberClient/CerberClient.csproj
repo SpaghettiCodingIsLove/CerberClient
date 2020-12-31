@@ -53,9 +53,13 @@
     <Reference Include="OpenTK.GLControl, Version=1.1.0.0, Culture=neutral, PublicKeyToken=bad199fe84eb3df4, processorArchitecture=MSIL">
       <HintPath>..\packages\OpenTK.GLControl.1.1.2225.0\lib\net20\OpenTK.GLControl.dll</HintPath>
     </Reference>
+    <Reference Include="RestSharp, Version=106.11.7.0, Culture=neutral, PublicKeyToken=598062e77f915f75, processorArchitecture=MSIL">
+      <HintPath>..\packages\RestSharp.106.11.7\lib\net452\RestSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -77,6 +81,15 @@
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+    <Compile Include="Model\Api\AccountResponse.cs" />
+    <Compile Include="Model\Api\AuthenticateRequest.cs" />
+    <Compile Include="Model\Api\AuthenticateResponse.cs" />
+    <Compile Include="Model\Api\ExtendTokenRequest.cs" />
+    <Compile Include="Model\Api\ExtendTokenResponse.cs" />
+    <Compile Include="Model\Api\ForgotPasswdRequest.cs" />
+    <Compile Include="Model\Api\RegisterRequest.cs" />
+    <Compile Include="Model\Api\RevokeTokenRequest.cs" />
+    <Compile Include="Model\Api\UpdateRequest.cs" />
     <Compile Include="Model\User.cs" />
     <Compile Include="ViewModel\AppViewModel.cs" />
     <Compile Include="ViewModel\BaseClasses\RelayCommand.cs" />

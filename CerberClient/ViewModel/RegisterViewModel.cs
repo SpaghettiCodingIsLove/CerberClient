@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+﻿using CerberClient.Model.Api;
 using CerberClient.ViewModel.BaseClasses;
+using RestSharp;
+using System.Windows.Controls;
+using System.Windows.Input;
 
 namespace CerberClient.ViewModel
 {
@@ -15,8 +13,6 @@ namespace CerberClient.ViewModel
         private string name;
         private string lastName;
         private string email;
-        private string password;
-
 
         public string Name
         {
@@ -48,15 +44,6 @@ namespace CerberClient.ViewModel
             }
         }
 
-        public string Password
-        {
-            get => password;
-            set
-            {
-                password = value;
-                OnPropertyChanged(nameof(Password));
-            }
-        }
 
         private ICommand createAccount;
         public ICommand CreateAccount 
@@ -68,9 +55,25 @@ namespace CerberClient.ViewModel
                     createAccount = new RelayCommand(
                         x =>
                         {
-                            mainViewModel.SwapPage("app");
+                            PasswordBox pwBox = x as PasswordBox;
+                            if (!string.IsNullOrWhiteSpace(pwBox.Password) && pwBox.Password.Length >= 4)
+                            {
+                                RegisterRequest registerRequest = new RegisterRequest
+                                {
+                                    Email = this.Email,
+                                    FirstName = this.Name,
+                                    LastName = this.LastName,
+                                    Password = pwBox.Password
+                                };
+                                RestClient client = new RestClient("http://localhost:4000/");
+                                RestRequest request = new RestRequest("Account/register", Method.POST);
+                                request.RequestFormat = DataFormat.Json;
+                                request.AddJsonBody(registerRequest);
+                                client.Execute(request);
+                                mainViewModel.SwapPage("app");
+                            }     
                         },
-                        x => Email != null && Password != null && Name != null && LastName != null
+                        x => !string.IsNullOrWhiteSpace(Email) && !string.IsNullOrWhiteSpace(Name) && !string.IsNullOrWhiteSpace(LastName)
                         );
                 }
 
