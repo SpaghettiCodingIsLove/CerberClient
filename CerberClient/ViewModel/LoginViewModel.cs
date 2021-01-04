@@ -16,6 +16,9 @@ using System.Windows;
 using System.IO;
 using System.Threading;
 using CerberClient.Model;
+using System.Drawing;
+using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace CerberClient.ViewModel
 {
@@ -114,9 +117,10 @@ namespace CerberClient.ViewModel
                     goToApp = new RelayCommand(
                         x => {
                             IsOpen = true;
-                            User.userLogin = Login;
+                            UserData.userLogin = Login;
+                            // Do tego UserData.userImage przypisz zdjęcie użytkownika z bazy
+                            UserData.userImage = "";
                             OpenCamera();
-                            //mainViewModel.SwapPage("app");
                         },
                         x => Login != null && Password != null
                         );
@@ -228,17 +232,15 @@ namespace CerberClient.ViewModel
             try
             {
                 // Na ten moment tymczasowe zdjęcie
-                string path = Directory.GetCurrentDirectory() + @"\Faces\";
-                string[] files = Directory.GetFiles(path, "*.jpg", SearchOption.AllDirectories);
+                //string path = Directory.GetCurrentDirectory() + @"\Faces\";
+                //string[] files = Directory.GetFiles(path, "*.jpg", SearchOption.AllDirectories);
 
-                foreach (var file in files)
-                {
-                    Image<Bgr, Byte> image = new Image<Bgr, byte>(file).Resize(200, 200, Inter.Cubic);
-                    trainedFaces.Add(image);
-                    personLabels.Add(imagesCount);
-                    string name = Login;
-                    personsNames.Add(name);
-                }
+
+                Image<Bgr, Byte> image = new Image<Bgr, byte>(UserData.ConvertStringToBitmap(UserData.userImage)).Resize(200, 200, Inter.Cubic);
+                trainedFaces.Add(image);
+                personLabels.Add(imagesCount);
+                string name = Login;
+                personsNames.Add(name);
 
                 recognizer = new EigenFaceRecognizer(imagesCount, tresholds);
                 recognizer.Train(trainedFaces.ToArray(), personLabels.ToArray());

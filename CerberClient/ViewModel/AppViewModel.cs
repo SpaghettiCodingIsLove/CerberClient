@@ -54,7 +54,7 @@ namespace CerberClient.ViewModel
         #region Konstruktor
         public AppViewModel()
         {
-            userLogin = User.userLogin;
+            userLogin = UserData.userLogin;
             RecognizingUserFace();
         }
         #endregion
@@ -113,7 +113,7 @@ namespace CerberClient.ViewModel
             if (videoCapture != null && videoCapture.Ptr != IntPtr.Zero)
             {
                 videoCapture.Retrieve(frame, 0);
-                currentFrame = frame.ToImage<Bgr, Byte>().Resize(75, 75, Inter.Cubic);
+                currentFrame = frame.ToImage<Bgr, Byte>().Resize(200, 200, Inter.Cubic);
 
                 Mat grayImage = new Mat();
                 CvInvoke.CvtColor(currentFrame, grayImage, ColorConversion.Bgr2Gray);
@@ -175,6 +175,8 @@ namespace CerberClient.ViewModel
         private void UserNotification()
         {
             StreamWriter writer;
+            if (File.Exists(Directory.GetCurrentDirectory() + @"\Logs\zdarzenia.txt") == false)
+                File.Create(Directory.GetCurrentDirectory() + @"\Logs\zdarzenia.txt");
             writer = File.AppendText(Directory.GetCurrentDirectory() + @"\Logs\zdarzenia.txt");
             if(numOfNotRecognisedFaces >= 35 || (numOfNotRecognisedFaces > numOfNotFoundFaces && numOfNotRecognisedFaces > numOfRecognisedFaces))
             {
@@ -200,18 +202,11 @@ namespace CerberClient.ViewModel
 
             try
             {
-                // Na ten moment tymczasowe zdjęcie
-                string path = Directory.GetCurrentDirectory() + @"\Faces\";
-                string[] files = Directory.GetFiles(path, "*.jpg", SearchOption.AllDirectories);
-
-                foreach (var file in files)
-                {
-                    Image<Bgr, Byte> image = new Image<Bgr, byte>(file).Resize(200, 200, Inter.Cubic);
-                    trainedFaces.Add(image);
-                    personLabels.Add(imagesCount);
-                    string name = userLogin;
-                    personsNames.Add(name);
-                }
+                Image<Bgr, Byte> image = new Image<Bgr, byte>(UserData.ConvertStringToBitmap(UserData.userImage)).Resize(200, 200, Inter.Cubic);
+                trainedFaces.Add(image);
+                personLabels.Add(imagesCount);
+                string name = userLogin;
+                personsNames.Add(name);
 
                 recognizer = new EigenFaceRecognizer(imagesCount, tresholds);
                 recognizer.Train(trainedFaces.ToArray(), personLabels.ToArray());

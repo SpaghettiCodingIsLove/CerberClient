@@ -46,7 +46,7 @@
                     Text="Aplikacja" HorizontalAlignment="Left"
                     />
 
-                <Image Source="{Binding CameraView}" Height="75" Width="75"
+                <Image Source="{Binding CameraView}" Height="200" Width="200"
                        HorizontalAlignment="Right"
                        />
 

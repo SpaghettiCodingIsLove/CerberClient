@@ -90,7 +90,7 @@
     <Compile Include="Model\Api\RegisterRequest.cs" />
     <Compile Include="Model\Api\RevokeTokenRequest.cs" />
     <Compile Include="Model\Api\UpdateRequest.cs" />
-    <Compile Include="Model\User.cs" />
+    <Compile Include="Model\UserData.cs" />
     <Compile Include="ViewModel\AppViewModel.cs" />
     <Compile Include="ViewModel\BaseClasses\RelayCommand.cs" />
     <Compile Include="ViewModel\BaseClasses\ViewModelBase.cs" />
