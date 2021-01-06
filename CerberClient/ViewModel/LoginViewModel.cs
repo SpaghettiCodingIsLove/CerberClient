@@ -16,6 +16,10 @@ using System.Windows;
 using System.IO;
 using System.Threading;
 using CerberClient.Model;
+using CerberClient.Model.Api;
+using System.Windows.Controls;
+using RestSharp;
+using Newtonsoft.Json;
 
 namespace CerberClient.ViewModel
 {
@@ -38,7 +42,7 @@ namespace CerberClient.ViewModel
         private int numOfRecognisedFaces = 0;
         private int numOfLoops = 0;
 
-        private string login;
+        private string email;
         private string password;
         private bool isOpen = false;
         private BitmapSource cameraView;
@@ -63,13 +67,13 @@ namespace CerberClient.ViewModel
             }
         }
 
-        public string Login
+        public string Email
         {
-            get => login;
+            get => email;
             set
             {
-                login = value;
-                OnPropertyChanged(nameof(Login));
+                email = value;
+                OnPropertyChanged(nameof(Email));
             }
         }
 
@@ -113,12 +117,27 @@ namespace CerberClient.ViewModel
                 {
                     goToApp = new RelayCommand(
                         x => {
-                            IsOpen = true;
-                            User.userLogin = Login;
-                            OpenCamera();
-                            //mainViewModel.SwapPage("app");
+                            PasswordBox pwBox = x as PasswordBox;
+                            if (!string.IsNullOrWhiteSpace(pwBox.Password))
+                            {
+                                AuthenticateRequest authenticateRequest = new AuthenticateRequest
+                                {
+                                    Email = this.Email,
+                                    Password = pwBox.Password
+                                };
+                                RestClient client = new RestClient("http://localhost:4000/");
+                                RestRequest request = new RestRequest("Account/authenticate", Method.POST);
+                                request.RequestFormat = RestSharp.DataFormat.Json;
+                                request.AddJsonBody(authenticateRequest);
+                                IRestResponse response = client.Execute(request);
+                                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                                {
+                                    UserData.response = JsonConvert.DeserializeObject<AuthenticateResponse>(response.Content);
+                                    mainViewModel.SwapPage("app");
+                                }
+                            }
                         },
-                        x => Login != null && Password != null
+                        x => Email != null 
                         );
                 }
 
@@ -236,7 +255,7 @@ namespace CerberClient.ViewModel
                     Image<Bgr, Byte> image = new Image<Bgr, byte>(file).Resize(200, 200, Inter.Cubic);
                     trainedFaces.Add(image);
                     personLabels.Add(imagesCount);
-                    string name = Login;
+                    string name = Email;
                     personsNames.Add(name);
                 }
 

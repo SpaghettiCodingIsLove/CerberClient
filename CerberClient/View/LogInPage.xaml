@@ -69,7 +69,7 @@
 
                         <TextBox 
                             Grid.Column="1"
-                            Text="{Binding Login}"
+                            Text="{Binding Email}"
                             />
                     </Grid>
 
@@ -84,9 +84,9 @@
                             Text="{Binding Source={x:Static resx:Login.password}}"
                             />
 
-                        <TextBox 
+                        <PasswordBox 
                             Grid.Column="1"
-                            Text="{Binding Password}"
+                            Name="PasswordBox"
                             />
                     </Grid>
 
@@ -101,6 +101,7 @@
                             Grid.Column="1"
                             Content="{Binding Source={x:Static resx:Login.logInButton}}"
                             Command="{Binding GoToApp}"
+                            CommandParameter="{Binding ElementName=PasswordBox}"
                             />
                     </Grid>
                 </Grid>
