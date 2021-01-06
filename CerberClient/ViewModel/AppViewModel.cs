@@ -16,6 +16,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Runtime.InteropServices;
+using System.Drawing;
 
 namespace CerberClient.ViewModel
 {
@@ -62,7 +63,7 @@ namespace CerberClient.ViewModel
             {
                 File.Create(Directory.GetCurrentDirectory() + @"\Logs\zdarzenia.txt");
             }
-            userLogin = User.userLogin;
+            userLogin = UserData.response.FirstName + " " + UserData.response.LastName;
             RecognizingUserFace();
         }
         #endregion
@@ -208,18 +209,17 @@ namespace CerberClient.ViewModel
 
             try
             {
-                // Na ten moment tymczasowe zdjęcie
-                string path = Directory.GetCurrentDirectory() + @"\Faces\";
-                string[] files = Directory.GetFiles(path, "*.jpg", SearchOption.AllDirectories);
-
-                foreach (var file in files)
+                Bitmap bmp;
+                using (var ms = new MemoryStream(Convert.FromBase64String(UserData.response.Image)))
                 {
-                    Image<Bgr, Byte> image = new Image<Bgr, byte>(file).Resize(200, 200, Inter.Cubic);
-                    trainedFaces.Add(image);
-                    personLabels.Add(imagesCount);
-                    string name = userLogin;
-                    personsNames.Add(name);
+                    bmp = new Bitmap(ms);
                 }
+                Image<Bgr, Byte> image = new Image<Bgr, byte>(bmp).Resize(200, 200, Inter.Cubic);
+                string path = Directory.GetCurrentDirectory() + @"\Faces\"; trainedFaces.Add(image);
+                string[] files = Directory.GetFiles(path, "*.jpg", SearchOption.AllDirectories); personLabels.Add(imagesCount);
+
+                string name = userLogin;
+                foreach (var file in files) personsNames.Add(name);
 
                 recognizer = new EigenFaceRecognizer(imagesCount, tresholds);
                 recognizer.Train(trainedFaces.ToArray(), personLabels.ToArray());

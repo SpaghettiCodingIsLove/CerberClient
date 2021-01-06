@@ -8,6 +8,7 @@ using CerberClient.ViewModel.BaseClasses;
 using CerberClient.View;
 using System.ComponentModel;
 using System.Windows.Input;
+using CerberClient.Model.Api;
 
 namespace CerberClient.ViewModel
 {

@@ -94,8 +94,8 @@ namespace CerberClient.ViewModel
                                 RestRequest request = new RestRequest("Account/register", Method.POST);
                                 request.RequestFormat = DataFormat.Json;
                                 request.AddJsonBody(registerRequest);
-                                var r = client.Execute(request);
-                                mainViewModel.SwapPage("app");
+                                IRestResponse response = client.Execute(request);
+                                //mainViewModel.SwapPage("app");
                             }     
                         },
                         x => !string.IsNullOrWhiteSpace(Email)
