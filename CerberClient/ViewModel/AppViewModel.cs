@@ -54,6 +54,14 @@ namespace CerberClient.ViewModel
         #region Konstruktor
         public AppViewModel()
         {
+            if (!Directory.Exists(Directory.GetCurrentDirectory() + @"\Logs"))
+            {
+                Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Logs");
+            }
+            if (!File.Exists(Directory.GetCurrentDirectory() + @"\Logs\zdarzenia.txt"))
+            {
+                File.Create(Directory.GetCurrentDirectory() + @"\Logs\zdarzenia.txt");
+            }
             userLogin = User.userLogin;
             RecognizingUserFace();
         }
