@@ -9,6 +9,6 @@ namespace CerberClient.Model
 {
     public static class UserData
     {
-        public static AuthenticateResponse response;
+        public static AuthenticateResponse Response;
     }
 }
