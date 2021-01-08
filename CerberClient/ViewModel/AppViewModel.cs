@@ -17,6 +17,7 @@ using System.Windows;
 using System.Windows.Media.Imaging;
 using System.Runtime.InteropServices;
 using System.Drawing;
+using CerberClient.Services;
 
 namespace CerberClient.ViewModel
 {
@@ -40,6 +41,8 @@ namespace CerberClient.ViewModel
         private int numOfNotRecognisedFaces = 0;
         private int numOfNotFoundFaces = 0;
         private int numOfLoops = 0;
+        private CameraWatcher cameraWatcher = new CameraWatcher();
+        private Task forceStop;
 
         public BitmapSource CameraView
         {
@@ -55,15 +58,32 @@ namespace CerberClient.ViewModel
         #region Konstruktor
         public AppViewModel()
         {
+            cameraWatcher.StartWatching();
+            forceStop = new Task(() =>
+            {
+                while (!cameraWatcher.Stop)
+                {
+                    
+                }
+                Application.Current.Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    UserData.Response = null;
+                    mainViewModel.SwapPage("login");
+                }));
+            });
+            forceStop.Start();
+
             if (!Directory.Exists(Directory.GetCurrentDirectory() + @"\Logs"))
             {
                 Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\Logs");
             }
+
             if (!File.Exists(Directory.GetCurrentDirectory() + @"\Logs\zdarzenia.txt"))
             {
                 File.Create(Directory.GetCurrentDirectory() + @"\Logs\zdarzenia.txt");
             }
-            userLogin = UserData.response.FirstName + " " + UserData.response.LastName;
+
+            userLogin = UserData.Response.FirstName + " " + UserData.Response.LastName;
             RecognizingUserFace();
         }
         #endregion
@@ -210,7 +230,7 @@ namespace CerberClient.ViewModel
             try
             {
                 Bitmap bmp;
-                using (var ms = new MemoryStream(Convert.FromBase64String(UserData.response.Image)))
+                using (var ms = new MemoryStream(Convert.FromBase64String(UserData.Response.Image)))
                 {
                     bmp = new Bitmap(ms);
                 }

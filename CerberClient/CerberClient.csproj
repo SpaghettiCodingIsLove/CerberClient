@@ -94,6 +94,7 @@
     <Compile Include="Model\Api\RevokeTokenRequest.cs" />
     <Compile Include="Model\Api\UpdateRequest.cs" />
     <Compile Include="Model\UserData.cs" />
+    <Compile Include="Services\CameraWatcher.cs" />
     <Compile Include="ViewModel\AppViewModel.cs" />
     <Compile Include="ViewModel\BaseClasses\RelayCommand.cs" />
     <Compile Include="ViewModel\BaseClasses\ViewModelBase.cs" />
@@ -105,6 +106,9 @@
     </Compile>
     <Compile Include="View\LogInPage.xaml.cs">
       <DependentUpon>LogInPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\OperatorPage.xaml.cs">
+      <DependentUpon>OperatorPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\RegisterPage.xaml.cs">
       <DependentUpon>RegisterPage.xaml</DependentUpon>
@@ -141,6 +145,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\LogInPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\OperatorPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

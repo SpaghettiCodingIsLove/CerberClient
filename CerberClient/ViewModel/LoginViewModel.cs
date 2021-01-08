@@ -132,7 +132,7 @@ namespace CerberClient.ViewModel
                                 IRestResponse response = client.Execute(request);
                                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                                 {
-                                    UserData.response = JsonConvert.DeserializeObject<AuthenticateResponse>(response.Content);
+                                    UserData.Response = JsonConvert.DeserializeObject<AuthenticateResponse>(response.Content);
                                     mainViewModel.SwapPage("app");
                                 }
                             }
