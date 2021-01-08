@@ -1,5 +1,8 @@
-﻿using System;
+﻿using CerberClient.ViewModel;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +26,18 @@ namespace CerberClient.View
         public RegisterPage()
         {
             InitializeComponent();
+        }
+
+        private void OpenFile_OnClick(object sender, RoutedEventArgs e)
+        {
+            RegisterViewModel viewModel = this.DataContext as RegisterViewModel;
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "PNG files (*.png)|*.png";
+            if (openFileDialog.ShowDialog() == true && !string.IsNullOrEmpty(openFileDialog.FileName))
+            {
+                viewModel.Image = File.ReadAllBytes(openFileDialog.FileName);
+                viewModel.ImagePath = openFileDialog.FileName;
+            }
         }
     }
 }
