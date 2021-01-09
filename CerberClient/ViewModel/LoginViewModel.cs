@@ -20,6 +20,7 @@ using CerberClient.Model.Api;
 using System.Windows.Controls;
 using RestSharp;
 using Newtonsoft.Json;
+using System.Drawing;
 
 namespace CerberClient.ViewModel
 {
@@ -133,7 +134,9 @@ namespace CerberClient.ViewModel
                                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                                 {
                                     UserData.Response = JsonConvert.DeserializeObject<AuthenticateResponse>(response.Content);
-                                    mainViewModel.SwapPage("app");
+                                    IsOpen = true;
+                                    OpenCamera();
+                                    //mainViewModel.SwapPage("app");
                                 }
                             }
                         },
@@ -246,18 +249,17 @@ namespace CerberClient.ViewModel
 
             try
             {
-                // Na ten moment tymczasowe zdjęcie
-                string path = Directory.GetCurrentDirectory() + @"\Faces\";
-                string[] files = Directory.GetFiles(path, "*.jpg", SearchOption.AllDirectories);
-
-                foreach (var file in files)
+                Bitmap bmp;
+                using (var ms = new MemoryStream(Convert.FromBase64String(UserData.Response.Image)))
                 {
-                    Image<Bgr, Byte> image = new Image<Bgr, byte>(file).Resize(200, 200, Inter.Cubic);
-                    trainedFaces.Add(image);
-                    personLabels.Add(imagesCount);
-                    string name = Email;
-                    personsNames.Add(name);
+                    bmp = new Bitmap(ms);
                 }
+                Image<Bgr, Byte> image = new Image<Bgr, byte>(bmp).Resize(200, 200, Inter.Cubic);
+
+                trainedFaces.Add(image);
+                personLabels.Add(imagesCount);
+                string name = UserData.Response.FirstName + " " + UserData.Response.LastName;
+                personsNames.Add(name);
 
                 recognizer = new EigenFaceRecognizer(imagesCount, tresholds);
                 recognizer.Train(trainedFaces.ToArray(), personLabels.ToArray());

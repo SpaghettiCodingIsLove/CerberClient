@@ -67,6 +67,7 @@ namespace CerberClient.ViewModel
                 }
                 Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
+                    LogOutUser();
                     UserData.Response = null;
                     mainViewModel.SwapPage("login");
                 }));
@@ -99,6 +100,7 @@ namespace CerberClient.ViewModel
                     logOut = new RelayCommand(
                         x => {
                             LogOutUser();
+                            mainViewModel.SwapPage("login");
                         },
                         x => true
                         );
@@ -117,7 +119,6 @@ namespace CerberClient.ViewModel
             timer = null;
             videoCapture.Dispose();
             videoCapture = null;
-            mainViewModel.SwapPage("login");
         }
 
         #endregion
@@ -142,7 +143,7 @@ namespace CerberClient.ViewModel
             if (videoCapture != null && videoCapture.Ptr != IntPtr.Zero)
             {
                 videoCapture.Retrieve(frame, 0);
-                currentFrame = frame.ToImage<Bgr, Byte>().Resize(75, 75, Inter.Cubic);
+                currentFrame = frame.ToImage<Bgr, Byte>().Resize(200, 200, Inter.Cubic);
 
                 Mat grayImage = new Mat();
                 CvInvoke.CvtColor(currentFrame, grayImage, ColorConversion.Bgr2Gray);
@@ -191,7 +192,7 @@ namespace CerberClient.ViewModel
 
             CameraView = ToBitmapSource(currentFrame);
 
-            if (numOfLoops == 50)
+            if (numOfLoops == 333)
             {
                 UserNotification();
                 numOfNotFoundFaces = 0;
@@ -205,18 +206,27 @@ namespace CerberClient.ViewModel
         {
             StreamWriter writer;
             writer = File.AppendText(Directory.GetCurrentDirectory() + @"\Logs\zdarzenia.txt");
-            if(numOfNotRecognisedFaces >= 35 || (numOfNotRecognisedFaces > numOfNotFoundFaces && numOfNotRecognisedFaces > numOfRecognisedFaces))
+            if(numOfNotRecognisedFaces >= 250 || (numOfNotRecognisedFaces > numOfNotFoundFaces && numOfNotRecognisedFaces > numOfRecognisedFaces))
             {
                 MessageBox.Show("Nie jesteś właścicielem konta");
                 writer.WriteLine(DateTime.Today.ToString() + " | " + userLogin + " | Inna osoba przed monitorem");
-                LogOutUser();
+                if(cameraWatcher.Problem == false)
+                    cameraWatcher.ProblemStart();
 
             }
-            if(numOfNotFoundFaces >= 35 || (numOfNotRecognisedFaces < numOfNotFoundFaces && numOfNotFoundFaces > numOfRecognisedFaces))
+            if(numOfNotFoundFaces >= 250 || (numOfNotRecognisedFaces < numOfNotFoundFaces && numOfNotFoundFaces > numOfRecognisedFaces))
             {
                 MessageBox.Show("Nie ma nikogo przed monitorem");
                 writer.WriteLine(DateTime.Today.ToString() + " | " + userLogin + " | Nie ma nikogo przed monitorem");
+                if(cameraWatcher.Problem == false)
+                    cameraWatcher.ProblemStart();
             }
+
+            if(numOfNotRecognisedFaces >= 250 || (numOfRecognisedFaces > numOfNotFoundFaces && numOfRecognisedFaces > numOfNotFoundFaces))
+            {
+                cameraWatcher.CameraOk();
+            }
+
             writer.Close();
         }
 
@@ -235,11 +245,11 @@ namespace CerberClient.ViewModel
                     bmp = new Bitmap(ms);
                 }
                 Image<Bgr, Byte> image = new Image<Bgr, byte>(bmp).Resize(200, 200, Inter.Cubic);
-                string path = Directory.GetCurrentDirectory() + @"\Faces\"; trainedFaces.Add(image);
-                string[] files = Directory.GetFiles(path, "*.jpg", SearchOption.AllDirectories); personLabels.Add(imagesCount);
 
+                trainedFaces.Add(image);
+                personLabels.Add(imagesCount);
                 string name = userLogin;
-                foreach (var file in files) personsNames.Add(name);
+                personsNames.Add(name);
 
                 recognizer = new EigenFaceRecognizer(imagesCount, tresholds);
                 recognizer.Train(trainedFaces.ToArray(), personLabels.ToArray());
