@@ -93,6 +93,7 @@
     <Compile Include="Model\Api\RegisterRequest.cs" />
     <Compile Include="Model\Api\RevokeTokenRequest.cs" />
     <Compile Include="Model\Api\UpdateRequest.cs" />
+    <Compile Include="Model\Api\UserResponse.cs" />
     <Compile Include="Model\UserData.cs" />
     <Compile Include="Services\CameraWatcher.cs" />
     <Compile Include="ViewModel\AppViewModel.cs" />
