@@ -135,6 +135,7 @@ namespace CerberClient.ViewModel
                 OnPropertyChanged(nameof(OrganisationName));
             }
         }
+
         public ObservableCollection<UserResponse> UserResponseList
         {
             get => userResponseList;
