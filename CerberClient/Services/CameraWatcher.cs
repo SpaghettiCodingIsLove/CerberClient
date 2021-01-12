@@ -66,7 +66,8 @@ namespace CerberClient.Services
         {
             RevokeTokenRequest revokeRequest = new RevokeTokenRequest
             {
-                Token = UserData.Response.RefreshToken
+                Token = UserData.Response.RefreshToken,
+                Id = UserData.Response.Id
             };
             RestRequest request = new RestRequest("Account/revoke-token", Method.POST);
             request.RequestFormat = RestSharp.DataFormat.Json;
@@ -78,7 +79,8 @@ namespace CerberClient.Services
         {
             ExtendTokenRequest extendToken = new ExtendTokenRequest
             {
-                Token = UserData.Response.RefreshToken
+                Token = UserData.Response.RefreshToken,
+                Id = UserData.Response.Id
             };
 
             RestRequest request = new RestRequest("Account/refresh-token", Method.POST);

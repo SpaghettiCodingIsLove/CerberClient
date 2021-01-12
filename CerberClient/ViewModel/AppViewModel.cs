@@ -67,7 +67,10 @@ namespace CerberClient.ViewModel
                 }
                 Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    LogOutUser();
+                    timer.Stop();
+                    timer = null;
+                    videoCapture.Dispose();
+                    videoCapture = null;
                     UserData.Response = null;
                     mainViewModel.SwapPage("login");
                 }));
@@ -115,6 +118,7 @@ namespace CerberClient.ViewModel
 
         private void LogOutUser()
         {
+            cameraWatcher.StopWatching();
             timer.Stop();
             timer = null;
             videoCapture.Dispose();
