@@ -60,6 +60,23 @@ namespace CerberClient.ViewModel
             }
         }
 
+        private ICommand onClosing;
+        public ICommand OnClosing
+        {
+            get
+            {
+                if(onClosing == null)
+                {
+                    onClosing = new RelayCommand(x =>
+                    {
+                        Environment.Exit(0);
+                    });
+                }
+
+                return onClosing;
+            }
+        }
+
         public void SwapPage(string page)
         {
             previousPage = Page;
@@ -75,6 +92,10 @@ namespace CerberClient.ViewModel
                     break;
                 case "app":
                     Page = new View.AppPage();
+                    CanGoBack = false;
+                    break;
+                case "operator":
+                    Page = new View.OperatorPage();
                     CanGoBack = false;
                     break;
                 default:

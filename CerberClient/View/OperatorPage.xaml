@@ -3,10 +3,16 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:vm="clr-namespace:CerberClient.ViewModel"
       xmlns:local="clr-namespace:CerberClient.View"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="OperatorPage">
+
+    <Page.DataContext>
+        <vm:OperatorViewModel />
+    </Page.DataContext>
+
 
     <Grid>
         <Grid.ColumnDefinitions>
@@ -33,10 +39,10 @@
 
                 <TextBlock 
                     Grid.Column="0"
-                    Text="{Binding Source={x:Static resx:Operator.name}}"
+                    Text="Imie"
                     />
 
-                <TextBox 
+                <TextBlock 
                     Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                     Grid.Column="1"
                     />
@@ -50,10 +56,10 @@
 
                 <TextBlock 
                     Grid.Column="0"
-                    Text="{Binding Source={x:Static resx:Operator.lastName}}"
+                    Text="Nazwisko"
                     />
 
-                <TextBox 
+                <TextBlock  
                     Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"
                     Grid.Column="1"
                     />
@@ -67,22 +73,33 @@
 
                 <TextBlock 
                     Grid.Column="0"
-                    Text="{Binding Source={x:Static resx:Operator.organisationName}}"
+                    Text="Organizacja:"
                     />
 
-                <TextBox 
+                <TextBlock 
                     Text="{Binding OrganisationName, UpdateSourceTrigger=PropertyChanged}"
                     Grid.Column="1"
                     />
             </Grid>
 
-            <DataGrid Name="UserResponceGrid" ItemsSource="{Binding userResponceList}" AutoGenerateColumns="False">
+            <DataGrid Name="UserResponceGrid" ItemsSource="{Binding UserResponseList, Mode=OneWay}" AutoGenerateColumns="False"
+    
+                        AlternatingRowBackground="Lavender"
+                        GridLinesVisibility="None"
+                        IsReadOnly="True"
+                        BorderBrush="Transparent"
+                        Background="Transparent"
+                        CanUserResizeColumns="False"
+                        CanUserResizeRows="False"
+                        CanUserSortColumns="False"
+                        RowHeaderWidth="0" Grid.Row="4">
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="First Name" Binding="{Binding FirstName}"/>
-                    <DataGridTextColumn Header="Last Name" Binding="{Binding LastName}"/>
-                    <DataGridCheckBoxColumn Header="Online" Binding="{Binding Online}"/>
+                    <DataGridTextColumn Header="Imie" Binding="{Binding FirstName}" Width="4*"/>
+                    <DataGridTextColumn Header="Nazwisko" Binding="{Binding LastName}" Width="4*"/>
+                    <DataGridCheckBoxColumn Header="Online" Binding="{Binding Online}" Width="2*"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
+        <Button Content="Wyloguj" Grid.Column="2" HorizontalAlignment="Left" Margin="15,20,0,0" VerticalAlignment="Top" Width="75" Command="{Binding LogOut}"/>
     </Grid>
 </Page>

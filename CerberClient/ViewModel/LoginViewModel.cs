@@ -134,9 +134,18 @@ namespace CerberClient.ViewModel
                                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                                 {
                                     UserData.Response = JsonConvert.DeserializeObject<AuthenticateResponse>(response.Content);
-                                    IsOpen = true;
-                                    OpenCamera();
-                                    //mainViewModel.SwapPage("app");
+
+                                    if (UserData.Response.IsOperator)
+                                    {
+                                        mainViewModel.SwapPage("operator");
+                                    }
+                                    else
+                                    {
+                                        IsOpen = true;
+                                        OpenCamera();
+                                        //mainViewModel.SwapPage("app");
+                                    }
+
                                 }
                             }
                         },
