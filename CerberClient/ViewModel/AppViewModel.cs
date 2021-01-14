@@ -196,7 +196,7 @@ namespace CerberClient.ViewModel
 
             CameraView = ToBitmapSource(currentFrame);
 
-            if (numOfLoops == 333)
+            if (numOfLoops == 50)
             {
                 UserNotification();
                 numOfNotFoundFaces = 0;
@@ -210,23 +210,24 @@ namespace CerberClient.ViewModel
         {
             StreamWriter writer;
             writer = File.AppendText(Directory.GetCurrentDirectory() + @"\Logs\zdarzenia.txt");
-            if(numOfNotRecognisedFaces >= 250 || (numOfNotRecognisedFaces > numOfNotFoundFaces && numOfNotRecognisedFaces > numOfRecognisedFaces))
+            if(numOfNotRecognisedFaces >= 35 || (numOfNotRecognisedFaces > numOfNotFoundFaces && numOfNotRecognisedFaces > numOfRecognisedFaces))
             {
                 MessageBox.Show("Nie jesteś właścicielem konta");
                 writer.WriteLine(DateTime.Today.ToString() + " | " + userLogin + " | Inna osoba przed monitorem");
-                if(cameraWatcher.Problem == false)
-                    cameraWatcher.ProblemStart();
+                LogOutUser();
 
             }
-            if(numOfNotFoundFaces >= 250 || (numOfNotRecognisedFaces < numOfNotFoundFaces && numOfNotFoundFaces > numOfRecognisedFaces))
+            if(numOfNotFoundFaces >= 35 || (numOfNotRecognisedFaces < numOfNotFoundFaces && numOfNotFoundFaces > numOfRecognisedFaces))
             {
                 MessageBox.Show("Nie ma nikogo przed monitorem");
                 writer.WriteLine(DateTime.Today.ToString() + " | " + userLogin + " | Nie ma nikogo przed monitorem");
-                if(cameraWatcher.Problem == false)
+                if(cameraWatcher.ProblemWatcher.IsAlive == false)
                     cameraWatcher.ProblemStart();
+                if(cameraWatcher.Problem == false)
+                    cameraWatcher.Problem = true;
             }
 
-            if(numOfNotRecognisedFaces >= 250 || (numOfRecognisedFaces > numOfNotFoundFaces && numOfRecognisedFaces > numOfNotFoundFaces))
+            if(numOfNotRecognisedFaces >= 35 || (numOfRecognisedFaces > numOfNotFoundFaces && numOfRecognisedFaces > numOfNotFoundFaces))
             {
                 cameraWatcher.CameraOk();
             }
