@@ -67,11 +67,14 @@ namespace CerberClient.ViewModel
                 }
                 Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
-                    timer.Stop();
-                    timer = null;
-                    videoCapture.Dispose();
-                    videoCapture = null;
-                    UserData.Response = null;
+                    if (timer != null)
+                    {
+                        timer.Stop();
+                        timer = null;
+                        videoCapture.Dispose();
+                        videoCapture = null;
+                    }
+                    
                     mainViewModel.SwapPage("login");
                 }));
             });
@@ -214,20 +217,17 @@ namespace CerberClient.ViewModel
             {
                 MessageBox.Show("Nie jesteś właścicielem konta");
                 writer.WriteLine(DateTime.Today.ToString() + " | " + userLogin + " | Inna osoba przed monitorem");
-                LogOutUser();
+                cameraWatcher.ProblemStart();
 
             }
             if(numOfNotFoundFaces >= 35 || (numOfNotRecognisedFaces < numOfNotFoundFaces && numOfNotFoundFaces > numOfRecognisedFaces))
             {
                 MessageBox.Show("Nie ma nikogo przed monitorem");
                 writer.WriteLine(DateTime.Today.ToString() + " | " + userLogin + " | Nie ma nikogo przed monitorem");
-                if(cameraWatcher.ProblemWatcher.IsAlive == false)
-                    cameraWatcher.ProblemStart();
-                if(cameraWatcher.Problem == false)
-                    cameraWatcher.Problem = true;
+                cameraWatcher.ProblemStart();
             }
 
-            if(numOfNotRecognisedFaces >= 35 || (numOfRecognisedFaces > numOfNotFoundFaces && numOfRecognisedFaces > numOfNotFoundFaces))
+            if(numOfRecognisedFaces >= 35 || (numOfRecognisedFaces > numOfNotFoundFaces && numOfRecognisedFaces > numOfNotFoundFaces))
             {
                 cameraWatcher.CameraOk();
             }

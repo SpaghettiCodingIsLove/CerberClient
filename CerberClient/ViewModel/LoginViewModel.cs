@@ -174,6 +174,8 @@ namespace CerberClient.ViewModel
             else
             {
                 MessageBox.Show("Nie rozpoznano");
+                if (videoCapture != null)
+                    videoCapture.Dispose();
             }
             IsOpen = false;
         }

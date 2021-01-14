@@ -73,6 +73,7 @@ namespace CerberClient.Services
             request.RequestFormat = RestSharp.DataFormat.Json;
             request.AddJsonBody(revokeRequest);
             client.Execute(request);
+            UserData.Response = null;
         }
 
         public void RefreshToken()
@@ -105,11 +106,23 @@ namespace CerberClient.Services
         {
             RunMainWatcher = true;
             Problem = false;
+            if (ProblemWatcher.IsAlive)
+            {
+                ProblemWatcher.Abort();
+                ProblemWatcher = new Thread(() =>
+                {
+                    Thread.Sleep(20000);
+                    if (Problem)
+                    {
+                        StopWatching();
+                    }
+                });
+            }
         }
 
         public void ProblemStart()
         {
-            if (!ProblemWatcher.IsAlive)
+            if (ProblemWatcher.ThreadState == ThreadState.Unstarted)
             {
                 Problem = true;
                 ProblemWatcher.Start();
