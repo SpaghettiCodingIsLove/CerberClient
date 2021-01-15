@@ -14,6 +14,10 @@
         <vm:AppViewModel />
     </Page.DataContext>
 
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="BoolToVis" />
+    </Page.Resources>
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50px" />
@@ -39,6 +43,10 @@
                     Content="{Binding Source={x:Static resx:App.logout}}"
                     Command="{Binding LogOut}"
                     />
+                <Button Content="Zaloguj do Microsoftu" HorizontalAlignment="Left" Margin="455,15,0,0" VerticalAlignment="Top" Width="125" Command="{Binding Connect}"/>
+                <Label Visibility="{Binding IsInOrganization, Converter={StaticResource BoolToVis}}" Content="Klucz organizacji:" HorizontalAlignment="Left" Margin="0,15,0,0" VerticalAlignment="Top"/>
+                <TextBox Visibility="{Binding IsInOrganization, Converter={StaticResource BoolToVis}}" Text="{Binding Key, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="105,17,0,0"/>
+                <Button Visibility="{Binding IsInOrganization, Converter={StaticResource BoolToVis}}" Command="{Binding JoinOrganization}" Content="Dołącz" HorizontalAlignment="Left" Margin="230,18,0,0" VerticalAlignment="Top" Width="75"/>
             </Grid>
 
             <Grid Grid.Row="1">
@@ -47,12 +55,32 @@
                     />
 
                 <Image Source="{Binding CameraView}" Height="200" Width="200"
-                       HorizontalAlignment="Right"
+                       HorizontalAlignment="Right" Margin="0,75,440,75"
                        />
+                <Grid HorizontalAlignment="Left" Height="330" Margin="280,10,0,0" VerticalAlignment="Top" Width="410">
+                    <DataGrid HorizontalAlignment="Left" Height="320" VerticalAlignment="Top" Width="400"
+                              ItemsSource="{Binding Contacts, Mode=OneWay}" AutoGenerateColumns="False"
+                        GridLinesVisibility="None"
+                              AlternatingRowBackground="Lavender"
+                        IsReadOnly="True"
+                        BorderBrush="Transparent"
+                        Background="Transparent"
+                        
+                        CanUserResizeRows="False"
+                              RowHeaderWidth="0">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Imie" Binding="{Binding GivenName}" Width="3*"/>
+                            <DataGridTextColumn Header="Nazwisko" Binding="{Binding Surname}" Width="3*"/>
+                            <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="4*"/>
+                            <DataGridTextColumn Header="Numer" Binding="{Binding Phone}" Width="4*"/>
+                        </DataGrid.Columns>
+                        
+                    </DataGrid>
+                </Grid>
 
             </Grid>
 
         </Grid>
-        
+
     </Grid>
 </Page>

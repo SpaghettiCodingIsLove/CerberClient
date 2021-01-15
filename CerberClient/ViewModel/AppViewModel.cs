@@ -18,6 +18,12 @@ using System.Windows.Media.Imaging;
 using System.Runtime.InteropServices;
 using System.Drawing;
 using CerberClient.Services;
+using Microsoft.Identity.Client;
+using RestSharp;
+using CerberClient.Model.Api;
+using System.Collections.ObjectModel;
+using Newtonsoft.Json;
+using RestSharp.Authenticators;
 
 namespace CerberClient.ViewModel
 {
@@ -43,6 +49,7 @@ namespace CerberClient.ViewModel
         private int numOfLoops = 0;
         private CameraWatcher cameraWatcher = new CameraWatcher();
         private Task forceStop;
+        private IAccount account;
 
         public BitmapSource CameraView
         {
@@ -63,7 +70,7 @@ namespace CerberClient.ViewModel
             {
                 while (!cameraWatcher.Stop)
                 {
-                    
+
                 }
                 Application.Current.Dispatcher.BeginInvoke(new Action(() =>
                 {
@@ -74,7 +81,7 @@ namespace CerberClient.ViewModel
                         videoCapture.Dispose();
                         videoCapture = null;
                     }
-                    
+
                     mainViewModel.SwapPage("login");
                 }));
             });
@@ -92,10 +99,44 @@ namespace CerberClient.ViewModel
 
             userLogin = UserData.Response.FirstName + " " + UserData.Response.LastName;
             RecognizingUserFace();
+            IsInOrganization = UserData.Response.OrganisationId == null;
         }
         #endregion
 
         #region zmienne publiczne
+        private bool isInOrganization;
+        public bool IsInOrganization
+        {
+            get => isInOrganization;
+            set
+            {
+                isInOrganization = value;
+                OnPropertyChanged(nameof(IsInOrganization));
+            }
+        }
+
+        private string key;
+        public string Key
+        {
+            get => key;
+            set
+            {
+                key = value;
+                OnPropertyChanged(nameof(Key));
+            }
+        }
+
+        private ObservableCollection<Contact> contacts;
+        public ObservableCollection<Contact> Contacts
+        {
+            get => contacts;
+            set
+            {
+                contacts = value;
+                OnPropertyChanged(nameof(Contacts));
+            }
+        }
+
         private ICommand logOut;
         public ICommand LogOut
         {
@@ -113,6 +154,89 @@ namespace CerberClient.ViewModel
                 }
 
                 return logOut;
+            }
+        }
+
+        private ICommand connect;
+        public ICommand Connect
+        {
+            get
+            {
+                if (connect == null)
+                {
+                    connect = new RelayCommand(async x =>
+                    {
+                        try
+                        {
+                            IPublicClientApplication app = PublicClientApplicationBuilder.Create("5cf90cca-ff25-4581-bc89-8ba5793a2fd3")
+                                                        .WithRedirectUri("https://login.microsoftonline.com/common/oauth2/nativeclient")
+                                                        .Build();
+
+                            string[] scopes = new string[]
+                            {
+                                 "user.read",
+                                 "Contacts.Read",
+                                 "Contacts.ReadWrite"
+                            };
+
+                            AuthenticationResult result = await app.AcquireTokenInteractive(scopes).ExecuteAsync();
+                            account = (await app.GetAccountsAsync()).First();
+
+                            RestClient client = new RestClient("https://graph.microsoft.com/v1.0/me/contacts");
+                            client.Authenticator = new OAuth2AuthorizationRequestHeaderAuthenticator(result.AccessToken, "Bearer");
+                            RestRequest request = new RestRequest(Method.GET);
+                            IRestResponse response = client.Execute(request);
+                            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                            {
+                                ContactResponse contactResponse = JsonConvert.DeserializeObject<ContactResponse>(response.Content);
+
+                                Contacts = contactResponse.Value;
+                            }
+                        }
+                        catch(Exception ex) { }
+                    },
+                    x => account == null);
+                }
+
+                return connect;
+            }
+        }
+
+        private ICommand joinOrganization;
+        public ICommand JoinOrganization
+        {
+            get
+            {
+                if (joinOrganization == null)
+                {
+                    joinOrganization = new RelayCommand(x =>
+                    {
+                        JoinOrganisationRequest joinRequest = new JoinOrganisationRequest
+                        {
+                            Id = UserData.Response.Id,
+                            Token = UserData.Response.RefreshToken,
+                            Key = this.Key
+                        };
+                        RestClient client = new RestClient("http://localhost:4000/");
+                        RestRequest request = new RestRequest("Account/join-organisation", Method.POST);
+                        request.RequestFormat = RestSharp.DataFormat.Json;
+                        request.AddJsonBody(joinRequest);
+                        IRestResponse response = client.Execute(request);
+                        if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                        {
+                            IsInOrganization = true;
+                        }
+                        else
+                        {
+                            Task.Run(() =>
+                            {
+                                MessageBox.Show("Nie można dołączyć do organizacji");
+                            });
+                        }
+                    });
+                }
+
+                return joinOrganization;
             }
         }
         #endregion
@@ -215,14 +339,21 @@ namespace CerberClient.ViewModel
             writer = File.AppendText(Directory.GetCurrentDirectory() + @"\Logs\zdarzenia.txt");
             if(numOfNotRecognisedFaces >= 35 || (numOfNotRecognisedFaces > numOfNotFoundFaces && numOfNotRecognisedFaces > numOfRecognisedFaces))
             {
-                MessageBox.Show("Nie jesteś właścicielem konta");
+                Task.Run(() =>
+                {
+                    MessageBox.Show("Nie jesteś właścicielem konta");
+                });
+                
                 writer.WriteLine(DateTime.Today.ToString() + " | " + userLogin + " | Inna osoba przed monitorem");
                 cameraWatcher.ProblemStart();
 
             }
             if(numOfNotFoundFaces >= 35 || (numOfNotRecognisedFaces < numOfNotFoundFaces && numOfNotFoundFaces > numOfRecognisedFaces))
             {
-                MessageBox.Show("Nie ma nikogo przed monitorem");
+                Task.Run(() =>
+                {
+                    MessageBox.Show("Nie ma nikogo przed monitorem");
+                });
                 writer.WriteLine(DateTime.Today.ToString() + " | " + userLogin + " | Nie ma nikogo przed monitorem");
                 cameraWatcher.ProblemStart();
             }
