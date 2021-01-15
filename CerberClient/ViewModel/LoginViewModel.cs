@@ -254,7 +254,7 @@ namespace CerberClient.ViewModel
             }
             CameraView = ToBitmapSource(currentFrame);
 
-            if(numOfLoops == 50)
+            if (numOfLoops == 50)
             {
                 isFaceRecognized();
             }
@@ -271,17 +271,20 @@ namespace CerberClient.ViewModel
 
             try
             {
-                Bitmap bmp;
-                using (var ms = new MemoryStream(Convert.FromBase64String(UserData.Response.Image)))
+                foreach (string img in UserData.Response.Image)
                 {
-                    bmp = new Bitmap(ms);
-                }
-                Image<Bgr, Byte> image = new Image<Bgr, byte>(bmp).Resize(200, 200, Inter.Cubic);
+                    Bitmap bmp;
+                    using (var ms = new MemoryStream(Convert.FromBase64String(img)))
+                    {
+                        bmp = new Bitmap(ms);
+                    }
+                    Image<Bgr, Byte> image = new Image<Bgr, byte>(bmp).Resize(200, 200, Inter.Cubic);
 
-                trainedFaces.Add(image);
-                personLabels.Add(imagesCount);
-                string name = UserData.Response.FirstName + " " + UserData.Response.LastName;
-                personsNames.Add(name);
+                    trainedFaces.Add(image);
+                    personLabels.Add(imagesCount);
+                    string name = UserData.Response.FirstName + " " + UserData.Response.LastName;
+                    personsNames.Add(name);
+                }
 
                 recognizer = new EigenFaceRecognizer(imagesCount, tresholds);
                 recognizer.Train(trainedFaces.ToArray(), personLabels.ToArray());

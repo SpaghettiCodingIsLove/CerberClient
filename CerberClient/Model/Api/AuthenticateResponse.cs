@@ -1,4 +1,6 @@
-﻿namespace CerberClient.Model.Api
+﻿using System.Collections.Generic;
+
+namespace CerberClient.Model.Api
 {
     public class AuthenticateResponse
     {
@@ -6,7 +8,7 @@
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
-        public string Image { get; set; }
+        public List<string> Image { get; set; }
         public long? OrganisationId { get; set; }
         public string OrganisationName { get; set; }
         public bool IsOperator { get; set; }
