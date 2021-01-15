@@ -3,8 +3,11 @@ using CerberClient.ViewModel.BaseClasses;
 using RestSharp;
 using System;
 using System.IO;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using DataFormat = RestSharp.DataFormat;
 
 namespace CerberClient.ViewModel
 {
@@ -95,7 +98,17 @@ namespace CerberClient.ViewModel
                                 request.RequestFormat = DataFormat.Json;
                                 request.AddJsonBody(registerRequest);
                                 IRestResponse response = client.Execute(request);
-                                //mainViewModel.SwapPage("app");
+                                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                                {
+                                    mainViewModel.SwapPage("login");
+                                }
+                                else
+                                {
+                                    Task.Run(() =>
+                                    {
+                                        MessageBox.Show("Rejestracja nie powiodło się");
+                                    });
+                                }
                             }     
                         },
                         x => !string.IsNullOrWhiteSpace(Email)

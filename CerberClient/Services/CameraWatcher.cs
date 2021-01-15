@@ -64,16 +64,19 @@ namespace CerberClient.Services
 
         public void RevokeToke()
         {
-            RevokeTokenRequest revokeRequest = new RevokeTokenRequest
+            if (UserData.Response != null)
             {
-                Token = UserData.Response.RefreshToken,
-                Id = UserData.Response.Id
-            };
-            RestRequest request = new RestRequest("Account/revoke-token", Method.POST);
-            request.RequestFormat = RestSharp.DataFormat.Json;
-            request.AddJsonBody(revokeRequest);
-            client.Execute(request);
-            UserData.Response = null;
+                RevokeTokenRequest revokeRequest = new RevokeTokenRequest
+                {
+                    Token = UserData.Response.RefreshToken,
+                    Id = UserData.Response.Id
+                };
+                RestRequest request = new RestRequest("Account/revoke-token", Method.POST);
+                request.RequestFormat = RestSharp.DataFormat.Json;
+                request.AddJsonBody(revokeRequest);
+                client.Execute(request);
+                UserData.Response = null;
+            }
         }
 
         public void RefreshToken()
