@@ -10,6 +10,6 @@
 
         public string Password { get; set; }
 
-        public string ImageArray { get; set; }
+        public string[] ImageArray { get; set; }
     }
 }

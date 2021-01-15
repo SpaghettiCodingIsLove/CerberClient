@@ -79,17 +79,6 @@
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock 
-                    Grid.Column="0"
-                    Text="{Binding Source={x:Static resx:Register.image}}"
-                    />
-
-                <TextBox 
-                    Grid.Column="1"
-                    IsReadOnly="True"
-                    PreviewMouseLeftButtonUp="OpenFile_OnClick"
-                    Text="{Binding ImagePath}"
-                    />
             </Grid>
 
             <Grid Grid.Row="4">
@@ -140,6 +129,16 @@
             </Grid>
 
         </Grid>
-        
+        <Popup Grid.Column="1"  
+                       PopupAnimation="Fade"
+                       Placement="Center"
+                       IsOpen="{Binding IsOpen}" 
+                       Width="320"
+                       Height="240">
+            <Grid>
+                <Image Stretch="Fill" Source="{Binding CameraView}"/>
+            </Grid>
+        </Popup>
     </Grid>
+    
 </Page>
