@@ -183,6 +183,7 @@ namespace CerberClient.ViewModel
                         resultImage.ROI = face;
 
                         Image<Gray, Byte> grayImage2 = resultImage.Convert<Gray, Byte>().Resize(200, 200, Inter.Cubic);
+                        CvInvoke.EqualizeHist(grayImage2, grayImage2);
                         var converter = new ImageConverter();
                         var outputArray = (byte[])converter.ConvertTo(grayImage2.ToBitmap(), typeof(byte[]));
 
