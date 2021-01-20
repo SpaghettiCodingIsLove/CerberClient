@@ -37,12 +37,12 @@ namespace CerberClient.ViewModel
         private Image<Bgr, Byte> currentFrame = null;
         private CascadeClassifier classifier = new CascadeClassifier("haarcascade_frontalface_alt.xml");
         private bool isTrained = false;
-        private List<Image<Bgr, Byte>> trainedFaces = new List<Image<Bgr, byte>>();
+        private List<Image<Gray, Byte>> trainedFaces = new List<Image<Gray, Byte>>();
         private List<int> personLabels = new List<int>();
         private List<string> personsNames = new List<string>();
         private Mat frame = new Mat();
         private DispatcherTimer timer;
-        private EigenFaceRecognizer recognizer;
+        private LBPHFaceRecognizer recognizer;
         private int numOfRecognisedFaces = 0;
         private int numOfNotRecognisedFaces = 0;
         private int numOfNotFoundFaces = 0;
@@ -239,6 +239,23 @@ namespace CerberClient.ViewModel
                 return joinOrganization;
             }
         }
+
+        private ICommand sendMail;
+        public ICommand SendMail
+        {
+            get
+            {
+                if (sendMail == null)
+                {
+                    sendMail = new RelayCommand(x =>
+                    {
+                        System.Diagnostics.Process.Start("mailto:" + ((Contact)x).Email);
+                    });
+                }
+
+                return sendMail;
+            }
+        }
         #endregion
 
         #region Funkcja Wylogowania
@@ -301,7 +318,7 @@ namespace CerberClient.ViewModel
                         var result = recognizer.Predict(grayImage2);
 
                         // Rozpoznano osobę ze zdjęcia
-                        if (result.Label != -1 && result.Distance < 3000)
+                        if (result.Label == 0 && result.Distance < 100)
                         {
                             CvInvoke.PutText(currentFrame, personsNames[result.Label], new System.Drawing.Point(face.X - 2, face.Y - 2),
                                 FontFace.HersheyComplex, 1.0, new Bgr(System.Drawing.Color.Orange).MCvScalar);
@@ -382,15 +399,52 @@ namespace CerberClient.ViewModel
                     {
                         bmp = new Bitmap(ms);
                     }
-                    Image<Bgr, Byte> image = new Image<Bgr, byte>(bmp).Resize(200, 200, Inter.Cubic);
+                    Image<Gray, Byte> image = new Image<Gray, Byte>(bmp).Resize(200, 200, Inter.Cubic);
 
                     trainedFaces.Add(image);
                     personLabels.Add(imagesCount);
                     string name = userLogin;
-                    personsNames.Add(name);
+                    if (!personsNames.Contains(name))
+                    {
+                        personsNames.Add(name);
+                    }
                 }
 
-                recognizer = new EigenFaceRecognizer(imagesCount, tresholds);
+                try
+                {
+                    string path = Directory.GetCurrentDirectory() + @"\Lewy\";
+                    string[] files = Directory.GetFiles(path, "*.png", SearchOption.AllDirectories);
+
+                    foreach (var file in files)
+                    {
+                        Image<Gray, Byte> image = new Image<Gray, Byte>(file).Resize(200, 200, Inter.Cubic);
+                        trainedFaces.Add(image);
+                        personLabels.Add(1);
+                        string name = userLogin;
+                        if (!personsNames.Contains("lewy"))
+                        {
+                            personsNames.Add("lewy");
+                        }
+                    }
+
+                    path = Directory.GetCurrentDirectory() + @"\Tusk\";
+                    files = Directory.GetFiles(path, "*.png", SearchOption.AllDirectories);
+
+                    foreach (var file in files)
+                    {
+                        Image<Gray, Byte> image = new Image<Gray, byte>(file).Resize(200, 200, Inter.Cubic);
+                        trainedFaces.Add(image);
+                        personLabels.Add(2);
+                        string name = userLogin;
+                        if(!personsNames.Contains("tusk"))
+                        {
+                            personsNames.Add("tusk");
+                        }
+                    }
+                }
+                catch { }
+
+                recognizer = new LBPHFaceRecognizer(1, 8, 8, 8, 100);
                 recognizer.Train(trainedFaces.ToArray(), personLabels.ToArray());
 
                 isTrained = true;

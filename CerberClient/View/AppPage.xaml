@@ -69,17 +69,17 @@
 
                 <Image Grid.Column="1" Source="{Binding CameraView}" Width="200" Height="200"
                        />
-                <Grid Margin="0 5" Grid.Column="2" HorizontalAlignment="Center" Height="330" VerticalAlignment="Top" Width="410">
-                    <DataGrid HorizontalAlignment="Center" Height="320" VerticalAlignment="Top" Width="400"
+                <Grid Margin="26,5,26,0" Grid.Column="2" HorizontalAlignment="Center" Height="495" VerticalAlignment="Top" Width="410">
+                    <DataGrid HorizontalAlignment="Center" Width="400"
                               ItemsSource="{Binding Contacts, Mode=OneWay}" AutoGenerateColumns="False"
                         GridLinesVisibility="None"
                               AlternatingRowBackground="Lavender"
                         IsReadOnly="True"
                         BorderBrush="Transparent"
                         Background="Transparent"
-                        
+                        Name="ContactGrid"
                         CanUserResizeRows="False"
-                              RowHeaderWidth="0">
+                              RowHeaderWidth="0" Margin="5,0" Height="485" VerticalAlignment="Top">
                         <DataGrid.ColumnHeaderStyle>
                             <Style TargetType="{x:Type DataGridColumnHeader}">
                                 <Setter Property="FontSize" Value="14"/>
@@ -98,7 +98,9 @@
                             <DataGridTextColumn Header="Email" Binding="{Binding Email}" Width="4*"/>
                             <DataGridTextColumn Header="Numer" Binding="{Binding Phone}" Width="4*"/>
                         </DataGrid.Columns>
-
+                        <DataGrid.InputBindings>
+                            <MouseBinding Gesture="LeftDoubleClick" Command="{Binding SendMail}" CommandParameter="{Binding ElementName=ContactGrid, Path=SelectedItem}"/>
+                        </DataGrid.InputBindings>
                     </DataGrid>
                 </Grid>
 
