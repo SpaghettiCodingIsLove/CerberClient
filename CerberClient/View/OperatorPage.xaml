@@ -6,7 +6,7 @@
       xmlns:vm="clr-namespace:CerberClient.ViewModel"
       xmlns:local="clr-namespace:CerberClient.View"
       mc:Ignorable="d" 
-      d:DesignHeight="500" d:DesignWidth="800"
+      d:DesignHeight="600" d:DesignWidth="1000"
       Title="OperatorPage">
 
     <Page.DataContext>
@@ -47,6 +47,8 @@
                 <TextBlock 
                     Style="{DynamicResource TextBlock}"
                     Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
+                    HorizontalAlignment="Left"
+                    FontSize="20"
                     Grid.Column="1"
                     />
             </Grid>
@@ -68,6 +70,8 @@
                     Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"
                     Style="{DynamicResource TextBlock}"
                     Grid.Column="1"
+                    HorizontalAlignment="Left"
+                    FontSize="20"
                     />
             </Grid>
 
@@ -88,6 +92,8 @@
                     Text="{Binding OrganisationName, UpdateSourceTrigger=PropertyChanged}"
                     Style="{DynamicResource TextBlock}"
                     Grid.Column="1"
+                    HorizontalAlignment="Left"
+                    FontSize="20"
                     />
             </Grid>
 

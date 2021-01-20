@@ -7,7 +7,7 @@
       xmlns:resx="clr-namespace:CerberClient.View.Resources"
       xmlns:local="clr-namespace:CerberClient.View"
       mc:Ignorable="d" 
-      d:DesignHeight="500" d:DesignWidth="800"
+      d:DesignHeight="600" d:DesignWidth="1000"
       Title="AppPage">
 
     <Page.DataContext>
@@ -34,32 +34,43 @@
 
             <Grid Grid.Row="0">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.5*" />
+                    <ColumnDefinition Width="150px" />
                     <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="100px" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="110px" />
+
                 </Grid.ColumnDefinitions>
 
                 <Button 
                     Style="{DynamicResource RoundCorner}"
-                    Grid.Column="1"
+                    Grid.Column="4"
                     Content="{Binding Source={x:Static resx:App.logout}}"
                     Command="{Binding LogOut}"
+                    Width="90"
+                    HorizontalAlignment="Right"
                     />
-                <Button  Style="{DynamicResource RoundCorner}" Content="Zaloguj do Microsoftu" HorizontalAlignment="Left" Margin="455,15,0,0" VerticalAlignment="Top" Width="135" Command="{Binding Connect}"/>
-                <Label Visibility="{Binding IsInOrganization, Converter={StaticResource BoolToVis}}" Content="Klucz organizacji:" HorizontalAlignment="Left" Margin="0,10,0,0" VerticalAlignment="Top" FontFamily="Comic Sans MS" FontSize="14"/>
-                <TextBox Template="{DynamicResource TextBox}" Visibility="{Binding IsInOrganization, Converter={StaticResource BoolToVis}}" Text="{Binding Key, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="31" TextWrapping="Wrap" VerticalAlignment="Top" Width="125" Margin="129,10,0,0"/>
-                <Button  Style="{DynamicResource RoundCorner}" Visibility="{Binding IsInOrganization, Converter={StaticResource BoolToVis}}" Command="{Binding JoinOrganization}" Content="Dołącz" HorizontalAlignment="Left" Margin="273,18,0,0" VerticalAlignment="Top" Width="75"/>
+                <Button Grid.Column="3" Style="{DynamicResource RoundCorner}" Content="Zaloguj do Microsoftu" HorizontalAlignment="Right" VerticalAlignment="Center" Width="135" Height="30" Command="{Binding Connect}"/>
+                <Label Grid.Column="0" VerticalAlignment="Center" Visibility="{Binding IsInOrganization, Converter={StaticResource BoolToVis}}" Content="Klucz organizacji:" HorizontalAlignment="Left" FontFamily="Comic Sans MS" FontSize="14"/>
+                <TextBox Grid.Column="1" Template="{DynamicResource TextBox}" Visibility="{Binding IsInOrganization, Converter={StaticResource BoolToVis}}" Text="{Binding Key, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="31" TextWrapping="Wrap" VerticalAlignment="Center" Width="150" />
+                <Button  Grid.Column="2" Style="{DynamicResource RoundCorner}" Visibility="{Binding IsInOrganization, Converter={StaticResource BoolToVis}}" Command="{Binding JoinOrganization}" Content="Dołącz" HorizontalAlignment="Left" VerticalAlignment="Center" Width="75" Height="40"/>
             </Grid>
 
             <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="0.15*"/>
+                    <ColumnDefinition Width="0.8*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
                 <TextBlock 
+                    Grid.Column="0"
                     Text="Aplikacja" HorizontalAlignment="Left" FontFamily="Comic Sans MS"
                     />
 
-                <Image Source="{Binding CameraView}" Height="200" Width="200"
-                       HorizontalAlignment="Right" Margin="0,75,440,75"
+                <Image Grid.Column="1" Source="{Binding CameraView}" Width="200" Height="200"
                        />
-                <Grid HorizontalAlignment="Left" Height="330" Margin="280,10,0,0" VerticalAlignment="Top" Width="410">
-                    <DataGrid HorizontalAlignment="Left" Height="320" VerticalAlignment="Top" Width="400"
+                <Grid Margin="0 5" Grid.Column="2" HorizontalAlignment="Center" Height="330" VerticalAlignment="Top" Width="410">
+                    <DataGrid HorizontalAlignment="Center" Height="320" VerticalAlignment="Top" Width="400"
                               ItemsSource="{Binding Contacts, Mode=OneWay}" AutoGenerateColumns="False"
                         GridLinesVisibility="None"
                               AlternatingRowBackground="Lavender"

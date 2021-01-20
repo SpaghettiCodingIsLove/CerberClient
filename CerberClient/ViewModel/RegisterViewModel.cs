@@ -42,6 +42,7 @@ namespace CerberClient.ViewModel
         private string name;
         private string lastName;
         private string email;
+        private bool consent = false;
         private byte[] image;
         private string imagePath;
         private bool isOpen = false;
@@ -117,6 +118,16 @@ namespace CerberClient.ViewModel
             }
         }
 
+        public bool Consent
+        {
+            get => consent;
+            set
+            {
+                consent = value;
+                OnPropertyChanged(nameof(Consent));
+            }
+        }
+
 
         private ICommand createAccount;
         public ICommand CreateAccount 
@@ -139,6 +150,7 @@ namespace CerberClient.ViewModel
                         x => !string.IsNullOrWhiteSpace(Email)
                         && !string.IsNullOrWhiteSpace(Name) 
                         && !string.IsNullOrWhiteSpace(LastName) 
+                        && Consent
                         );
                 }
 

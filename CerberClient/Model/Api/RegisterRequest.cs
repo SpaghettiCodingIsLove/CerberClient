@@ -10,6 +10,8 @@
 
         public string Password { get; set; }
 
+        public bool Consent { get; set; }
+
         public string[] ImageArray { get; set; }
     }
 }
