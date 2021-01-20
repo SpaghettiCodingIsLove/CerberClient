@@ -224,7 +224,12 @@ namespace CerberClient.ViewModel
                         IRestResponse response = client.Execute(request);
                         if (response.StatusCode == System.Net.HttpStatusCode.OK)
                         {
-                            IsInOrganization = true;
+                            UserData.Response.OrganisationId = 0;
+                            IsInOrganization = false;
+                            Task.Run(() =>
+                            {
+                                MessageBox.Show("Pomyślnie dołączono do organizacji");
+                            });
                         }
                         else
                         {
