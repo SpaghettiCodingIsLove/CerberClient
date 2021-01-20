@@ -23,6 +23,7 @@ namespace CerberClient
         public MainWindow()
         {
             InitializeComponent();
+            
         }
     }
 }

@@ -9,6 +9,8 @@
         mc:Ignorable="d"
         Title="Cerber" Height="450" Width="800">
 
+ 
+
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
             <i:InvokeCommandAction Command="{Binding OnClosing}"/>
@@ -23,7 +25,7 @@
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
     </Window.Resources>
 
-    <Grid>
+    <Grid Background="#FFC9B80E">
         <Grid Panel.ZIndex="1000">
             <Grid.RowDefinitions>
                 <RowDefinition Height="50px" />
@@ -37,6 +39,7 @@
                 </Grid.ColumnDefinitions>
 
                 <Button 
+                    Style="{DynamicResource RoundCorner}"
                     Visibility="{Binding CanGoBack, Converter={StaticResource BoolToVis}, Mode=OneWay}"
                     Command="{Binding GoBack}"
                     Grid.Column="1"

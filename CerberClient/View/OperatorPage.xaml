@@ -6,7 +6,7 @@
       xmlns:vm="clr-namespace:CerberClient.ViewModel"
       xmlns:local="clr-namespace:CerberClient.View"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="500" d:DesignWidth="800"
       Title="OperatorPage">
 
     <Page.DataContext>
@@ -14,7 +14,7 @@
     </Page.DataContext>
 
 
-    <Grid>
+    <Grid Background="#FFC9B80E">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100px" />
             <ColumnDefinition Width="*" />
@@ -38,11 +38,14 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock 
+                    Style="{DynamicResource TextBlock}"
+                    HorizontalAlignment="Left"
                     Grid.Column="0"
                     Text="Imie"
                     />
 
                 <TextBlock 
+                    Style="{DynamicResource TextBlock}"
                     Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"
                     Grid.Column="1"
                     />
@@ -55,12 +58,15 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock 
+                    Style="{DynamicResource TextBlock}"
+                    HorizontalAlignment="Left"
                     Grid.Column="0"
                     Text="Nazwisko"
                     />
 
                 <TextBlock  
                     Text="{Binding LastName, UpdateSourceTrigger=PropertyChanged}"
+                    Style="{DynamicResource TextBlock}"
                     Grid.Column="1"
                     />
             </Grid>
@@ -72,12 +78,15 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock 
+                    HorizontalAlignment="Left"
+                    Style="{DynamicResource TextBlock}"
                     Grid.Column="0"
                     Text="Organizacja:"
                     />
 
                 <TextBlock 
                     Text="{Binding OrganisationName, UpdateSourceTrigger=PropertyChanged}"
+                    Style="{DynamicResource TextBlock}"
                     Grid.Column="1"
                     />
             </Grid>
@@ -93,6 +102,18 @@
                         CanUserResizeRows="False"
                         CanUserSortColumns="False"
                         RowHeaderWidth="0" Grid.Row="4">
+                <DataGrid.ColumnHeaderStyle>
+                    <Style TargetType="{x:Type DataGridColumnHeader}">
+                        <Setter Property="FontSize" Value="18"/>
+                        <Setter Property="FontFamily" Value="Comic Sans MS"/>
+                    </Style>
+                </DataGrid.ColumnHeaderStyle>
+                <DataGrid.RowStyle>
+                    <Style TargetType="{x:Type DataGridRow}">
+                        <Setter Property="FontSize" Value="18"/>
+                        <Setter Property="FontFamily" Value="Comic Sans MS"/>
+                    </Style>
+                </DataGrid.RowStyle>
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Imie" Binding="{Binding FirstName}" Width="4*"/>
                     <DataGridTextColumn Header="Nazwisko" Binding="{Binding LastName}" Width="4*"/>
@@ -100,6 +121,6 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
-        <Button Content="Wyloguj" Grid.Column="2" HorizontalAlignment="Left" Margin="15,20,0,0" VerticalAlignment="Top" Width="75" Command="{Binding LogOut}"/>
+        <Button Style="{DynamicResource RoundCorner}" Content="Wyloguj" Grid.Column="2" HorizontalAlignment="Left" Margin="15,20,0,0" VerticalAlignment="Top" Width="75" Command="{Binding LogOut}" FontSize="16"/>
     </Grid>
 </Page>

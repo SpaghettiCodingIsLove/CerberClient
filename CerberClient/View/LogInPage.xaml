@@ -7,119 +7,153 @@
       xmlns:resx="clr-namespace:CerberClient.View.Resources"
       xmlns:local="clr-namespace:CerberClient.View"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="500" d:DesignWidth="800"
+      
       Title="LogInPage">
+
+    <Page.Resources>
+
+    </Page.Resources>
+
+
 
     <Page.DataContext>
         <vm:LoginViewModel />
     </Page.DataContext>
 
-    <Grid>
+    <Grid Background="#FFC9B80E">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50px" />
+            <ColumnDefinition Width="80px" />
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="50px" />
+            <ColumnDefinition Width="80px" />
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
-                <RowDefinition Height="50px" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="50px" />
+                <RowDefinition Height="0.2*" />
+                <RowDefinition Height="1*" />
+                <RowDefinition Height="0.1*" />
             </Grid.RowDefinitions>
 
-            <Grid Grid.Row="0">
+            <Grid Grid.Row="0" Background="#FFC9B80E">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="2*"/>
+                    <RowDefinition Height="4*"/>
+                </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="100px" />
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="1*" />
                 </Grid.ColumnDefinitions>
 
-                <Button Grid.Column="1" 
+                <TextBlock
+                    Grid.Column="0"
+                    Grid.Row="1"
+                    Text="Cerber Client"
+                    FontSize="32px"
+                    HorizontalAlignment="Center" FontWeight="Bold" FontStyle="Italic" Margin="205,0,104.273,0"
+                    />
+
+
+                <Button Style="{DynamicResource RoundCorner}"
+                    Grid.Column="2" 
+                        Grid.Row="1"
                         Content="{Binding Source={x:Static resx:Login.registerButton}}"
-                        Command="{Binding GoToRegister}"
+                        Command="{Binding GoToRegister}" FontSize="14" FontFamily="Roboto"
+                        
                         />
             </Grid>
 
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100px" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="100px" />
+                    <ColumnDefinition Width="0.3*" />
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="0.7*" />
                 </Grid.ColumnDefinitions>
 
                 <Grid Grid.Column="1">
                     <Grid.RowDefinitions>
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
-                        <RowDefinition Height="*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="0.2*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
                     </Grid.RowDefinitions>
 
                     <Grid Grid.Row="1">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="2*" />
                         </Grid.ColumnDefinitions>
 
                         <TextBlock 
                             Grid.Column="0"
-                            Text="{Binding Source={x:Static resx:Login.login}}"
+                            Text="{Binding Source={x:Static resx:Login.login}}" Style="{DynamicResource TextBlock}"
                             />
 
                         <TextBox 
+                            Template="{DynamicResource TextBox}"
                             Grid.Column="1"
-                            Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}"
-                            />
-                    </Grid>
-
-                    <Grid Grid.Row="2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock 
-                            Grid.Column="0"
-                            Text="{Binding Source={x:Static resx:Login.password}}"
-                            />
-
-                        <PasswordBox 
-                            Grid.Column="1"
-                            Name="PasswordBox"
+                            Text="{Binding Email, UpdateSourceTrigger=PropertyChanged}" FontSize="20"
+                            VerticalContentAlignment="Center"
                             />
                     </Grid>
 
                     <Grid Grid.Row="3">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="2*" />
                         </Grid.ColumnDefinitions>
+
+                        <TextBlock 
+                            Grid.Column="0"
+                            Text="{Binding Source={x:Static resx:Login.password}}" Style="{DynamicResource TextBlock}"
+                            />
+
+                        <PasswordBox 
+                            Template="{DynamicResource Password}"
+                            Grid.Column="1"
+                            Name="PasswordBox" FontSize="20"
+                            VerticalContentAlignment="Center"
+                            />
+                    </Grid>
+
+                    <Grid Grid.Row="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1.7*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="0.6*" />
+                        </Grid.ColumnDefinitions>
+
+
 
                         <Button 
                             Grid.Column="1"
+                            Style="{DynamicResource RoundCorner}"
                             Content="{Binding Source={x:Static resx:Login.logInButton}}"
                             Command="{Binding GoToApp}"
                             CommandParameter="{Binding ElementName=PasswordBox}"
                             />
+
+
                     </Grid>
                 </Grid>
 
                 <Popup Grid.Column="1"  
                        PopupAnimation="Fade"
                        Placement="Center"
-                       IsOpen="{Binding IsOpen}" 
-                       Width="320"
-                       Height="240">
+                       IsOpen="{Binding IsOpen}"
+                       Height="431"
+                       VerticalAlignment="Top" Margin="0,-64,10,-21">
+
                     <Grid>
                         <Image Stretch="Fill" Source="{Binding CameraView}"/>
                     </Grid>
                 </Popup>
 
             </Grid>
-            
+
         </Grid>
-        
+
     </Grid>
 </Page>
