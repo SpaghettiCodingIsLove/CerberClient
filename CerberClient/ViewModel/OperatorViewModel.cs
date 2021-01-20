@@ -24,6 +24,7 @@ namespace CerberClient.ViewModel
 
         public OperatorViewModel()
         {
+            
             Name = UserData.Response.FirstName;
             LastName = UserData.Response.LastName;
             OrganisationName = UserData.Response.OrganisationName;

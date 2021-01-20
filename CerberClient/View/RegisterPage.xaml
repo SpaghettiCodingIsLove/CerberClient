@@ -7,7 +7,7 @@
       xmlns:resx="clr-namespace:CerberClient.View.Resources"
       xmlns:local="clr-namespace:CerberClient.View"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="500" d:DesignWidth="800"
       Title="RegisterPage">
 
     <Page.DataContext>
@@ -157,9 +157,9 @@
             PlacementTarget="{Binding ElementName=Test}"
             PopupAnimation="Fade"
             Placement="Center"
-            Height="417"
+            Height="405"
             IsOpen="{Binding IsOpen}"
-            VerticalOffset="-18">
+            VerticalOffset="-10">
 
 
 

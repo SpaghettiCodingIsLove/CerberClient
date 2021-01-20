@@ -149,6 +149,7 @@ namespace CerberClient.ViewModel
                                 }
                                 else
                                 {
+                                    
                                     Task.Run(() =>
                                     {
                                         MessageBox.Show("Logowanie nie powiodło się");

@@ -214,10 +214,12 @@ namespace CerberClient.ViewModel
                             }
                             else
                             {
-                                Task.Run(() =>
-                                {
-                                    MessageBox.Show("Rejestracja nie powiodła się");
-                                });
+
+                               
+                                 Task.Run(() =>
+                                 {
+                                     MessageBox.Show("Rejestracja nie powiodła się");
+                                 });
                             }
                             IsOpen = false;
                             imagesToSend.Clear();
