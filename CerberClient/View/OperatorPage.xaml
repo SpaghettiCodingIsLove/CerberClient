@@ -14,7 +14,7 @@
     </Page.DataContext>
 
 
-    <Grid>
+    <Grid Background="#FFC9B80E">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="100px" />
             <ColumnDefinition Width="*" />
@@ -38,6 +38,8 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock 
+                    Style="{DynamicResource TextBlock}"
+                    HorizontalAlignment="Left"
                     Grid.Column="0"
                     Text="Imie"
                     />
@@ -55,6 +57,8 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock 
+                    Style="{DynamicResource TextBlock}"
+                    HorizontalAlignment="Left"
                     Grid.Column="0"
                     Text="Nazwisko"
                     />
@@ -72,6 +76,8 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock 
+                    HorizontalAlignment="Left"
+                    Style="{DynamicResource TextBlock}"
                     Grid.Column="0"
                     Text="Organizacja:"
                     />
@@ -100,6 +106,6 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
-        <Button Content="Wyloguj" Grid.Column="2" HorizontalAlignment="Left" Margin="15,20,0,0" VerticalAlignment="Top" Width="75" Command="{Binding LogOut}"/>
+        <Button Style="{DynamicResource RoundCorner}" Content="Wyloguj" Grid.Column="2" HorizontalAlignment="Left" Margin="15,20,0,0" VerticalAlignment="Top" Width="75" Command="{Binding LogOut}"/>
     </Grid>
 </Page>

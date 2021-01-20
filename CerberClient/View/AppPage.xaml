@@ -39,19 +39,20 @@
                 </Grid.ColumnDefinitions>
 
                 <Button 
+                    Style="{DynamicResource RoundCorner}"
                     Grid.Column="1"
                     Content="{Binding Source={x:Static resx:App.logout}}"
                     Command="{Binding LogOut}"
                     />
-                <Button Content="Zaloguj do Microsoftu" HorizontalAlignment="Left" Margin="455,15,0,0" VerticalAlignment="Top" Width="125" Command="{Binding Connect}"/>
-                <Label Visibility="{Binding IsInOrganization, Converter={StaticResource BoolToVis}}" Content="Klucz organizacji:" HorizontalAlignment="Left" Margin="0,15,0,0" VerticalAlignment="Top"/>
-                <TextBox Visibility="{Binding IsInOrganization, Converter={StaticResource BoolToVis}}" Text="{Binding Key, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="105,17,0,0"/>
-                <Button Visibility="{Binding IsInOrganization, Converter={StaticResource BoolToVis}}" Command="{Binding JoinOrganization}" Content="Dołącz" HorizontalAlignment="Left" Margin="230,18,0,0" VerticalAlignment="Top" Width="75"/>
+                <Button  Style="{DynamicResource RoundCorner}" Content="Zaloguj do Microsoftu" HorizontalAlignment="Left" Margin="455,15,0,0" VerticalAlignment="Top" Width="135" Command="{Binding Connect}"/>
+                <Label Visibility="{Binding IsInOrganization, Converter={StaticResource BoolToVis}}" Content="Klucz organizacji:" HorizontalAlignment="Left" Margin="0,15,0,0" VerticalAlignment="Top" FontFamily="Comic Sans MS" FontSize="14"/>
+                <TextBox Template="{DynamicResource TextBox}" Visibility="{Binding IsInOrganization, Converter={StaticResource BoolToVis}}" Text="{Binding Key, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="125" Margin="129,18,0,0"/>
+                <Button  Style="{DynamicResource RoundCorner}" Visibility="{Binding IsInOrganization, Converter={StaticResource BoolToVis}}" Command="{Binding JoinOrganization}" Content="Dołącz" HorizontalAlignment="Left" Margin="273,18,0,0" VerticalAlignment="Top" Width="75"/>
             </Grid>
 
             <Grid Grid.Row="1">
                 <TextBlock 
-                    Text="Aplikacja" HorizontalAlignment="Left"
+                    Text="Aplikacja" HorizontalAlignment="Left" FontFamily="Comic Sans MS"
                     />
 
                 <Image Source="{Binding CameraView}" Height="200" Width="200"
