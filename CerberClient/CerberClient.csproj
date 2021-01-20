@@ -75,6 +75,7 @@
     <Compile Include="Model\Api\UserResponse.cs" />
     <Compile Include="Model\UserData.cs" />
     <Compile Include="Services\CameraWatcher.cs" />
+    <Compile Include="Tests\UnitTests.cs" />
     <Compile Include="ViewModel\AppViewModel.cs" />
     <Compile Include="ViewModel\BaseClasses\RelayCommand.cs" />
     <Compile Include="ViewModel\BaseClasses\ViewModelBase.cs" />
@@ -191,6 +192,14 @@
     </PackageReference>
     <PackageReference Include="System.Windows.Interactivity.WPF">
       <Version>2.0.20525</Version>
+    </PackageReference>
+    <PackageReference Include="xunit">
+      <Version>2.4.1</Version>
+    </PackageReference>
+    <PackageReference Include="xunit.runner.visualstudio">
+      <Version>2.4.3</Version>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
