@@ -52,7 +52,7 @@
                     />
                 <Button Grid.Column="3" Style="{DynamicResource RoundCorner}" Content="Zaloguj do Microsoftu" HorizontalAlignment="Right" VerticalAlignment="Center" Width="135" Height="30" Command="{Binding Connect}"/>
                 <Label Grid.Column="0" VerticalAlignment="Center" Visibility="{Binding IsInOrganization, Converter={StaticResource BoolToVis}}" Content="Klucz organizacji:" HorizontalAlignment="Left" FontFamily="Comic Sans MS" FontSize="14"/>
-                <TextBox Grid.Column="1" Template="{DynamicResource TextBox}" Visibility="{Binding IsInOrganization, Converter={StaticResource BoolToVis}}" Text="{Binding Key, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="31" TextWrapping="Wrap" VerticalAlignment="Center" Width="150" />
+                <TextBox Grid.Column="1" Template="{DynamicResource TextBox}" Visibility="{Binding IsInOrganization, Converter={StaticResource BoolToVis}}" Text="{Binding Key, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="31" TextWrapping="Wrap" VerticalAlignment="Center" Width="150" VerticalContentAlignment="Center"/>
                 <Button  Grid.Column="2" Style="{DynamicResource RoundCorner}" Visibility="{Binding IsInOrganization, Converter={StaticResource BoolToVis}}" Command="{Binding JoinOrganization}" Content="Dołącz" HorizontalAlignment="Left" VerticalAlignment="Center" Width="75" Height="40"/>
             </Grid>
 

@@ -41,7 +41,7 @@
                     Style="{DynamicResource TextBlock}"
                     HorizontalAlignment="Left"
                     Grid.Column="0"
-                    Text="Imie"
+                    Text="Imię:"
                     />
 
                 <TextBlock 
@@ -63,7 +63,7 @@
                     Style="{DynamicResource TextBlock}"
                     HorizontalAlignment="Left"
                     Grid.Column="0"
-                    Text="Nazwisko"
+                    Text="Nazwisko:"
                     />
 
                 <TextBlock  
@@ -121,7 +121,7 @@
                     </Style>
                 </DataGrid.RowStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Imie" Binding="{Binding FirstName}" Width="4*"/>
+                    <DataGridTextColumn Header="Imię" Binding="{Binding FirstName}" Width="4*"/>
                     <DataGridTextColumn Header="Nazwisko" Binding="{Binding LastName}" Width="4*"/>
                     <DataGridCheckBoxColumn Header="Online" Binding="{Binding Online}" Width="2*"/>
                 </DataGrid.Columns>
