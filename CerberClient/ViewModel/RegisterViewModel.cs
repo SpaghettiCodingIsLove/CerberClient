@@ -42,7 +42,7 @@ namespace CerberClient.ViewModel
         private string name;
         private string lastName;
         private string email;
-        private bool consent = false;
+        private bool consent;
         private byte[] image;
         private string imagePath;
         private bool isOpen = false;
@@ -222,6 +222,10 @@ namespace CerberClient.ViewModel
                             IRestResponse response = client.Execute(request);
                             if (response.StatusCode == System.Net.HttpStatusCode.OK)
                             {
+                                Task.Run(() =>
+                                {
+                                    MessageBox.Show("Pomyślnie założono konto");
+                                });
                                 mainViewModel.SwapPage("login");
                             }
                             else
