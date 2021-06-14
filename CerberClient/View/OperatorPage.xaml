@@ -41,7 +41,7 @@
                     Style="{DynamicResource TextBlock}"
                     HorizontalAlignment="Left"
                     Grid.Column="0"
-                    Text="Imię:"
+                    Text="First name:"
                     />
 
                 <TextBlock 
@@ -63,7 +63,7 @@
                     Style="{DynamicResource TextBlock}"
                     HorizontalAlignment="Left"
                     Grid.Column="0"
-                    Text="Nazwisko:"
+                    Text="Last name:"
                     />
 
                 <TextBlock  
@@ -85,7 +85,7 @@
                     HorizontalAlignment="Left"
                     Style="{DynamicResource TextBlock}"
                     Grid.Column="0"
-                    Text="Organizacja:"
+                    Text="Organisation:"
                     />
 
                 <TextBlock 
@@ -121,12 +121,12 @@
                     </Style>
                 </DataGrid.RowStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Imię" Binding="{Binding FirstName}" Width="4*"/>
-                    <DataGridTextColumn Header="Nazwisko" Binding="{Binding LastName}" Width="4*"/>
+                    <DataGridTextColumn Header="First name" Binding="{Binding FirstName}" Width="4*"/>
+                    <DataGridTextColumn Header="Last name" Binding="{Binding LastName}" Width="4*"/>
                     <DataGridCheckBoxColumn Header="Online" Binding="{Binding Online}" Width="2*"/>
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
-        <Button Style="{DynamicResource RoundCorner}" Content="Wyloguj" Grid.Column="2" HorizontalAlignment="Left" Margin="15,20,0,0" VerticalAlignment="Top" Width="75" Command="{Binding LogOut}" FontSize="16"/>
+        <Button Style="{DynamicResource RoundCorner}" Content="Logout" Grid.Column="2" HorizontalAlignment="Left" Margin="15,20,0,0" VerticalAlignment="Top" Width="75" Command="{Binding LogOut}" FontSize="16"/>
     </Grid>
 </Page>

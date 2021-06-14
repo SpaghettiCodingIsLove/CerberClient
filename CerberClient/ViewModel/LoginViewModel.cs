@@ -149,10 +149,10 @@ namespace CerberClient.ViewModel
                                 }
                                 else
                                 {
-                                    
+
                                     Task.Run(() =>
                                     {
-                                        MessageBox.Show("Logowanie nie powiodło się");
+                                        MessageBox.Show("Login in failed!");
                                     });
                                 }
                             }
@@ -176,17 +176,17 @@ namespace CerberClient.ViewModel
 
             if (numOfRecognisedFaces >= 35)
             {
-                Task.Run(() =>
+                /*Task.Run(() =>
                 {
                     MessageBox.Show("Rozpoznano");
-                });
+                });*/
                 mainViewModel.SwapPage("app");
             }
             else
             {
                 Task.Run(() =>
                 {
-                    MessageBox.Show("Nie rozpoznano");
+                    MessageBox.Show("Not recoginzed");
                 });
             }
             IsOpen = false;
@@ -197,7 +197,7 @@ namespace CerberClient.ViewModel
         {
             if (videoCapture != null)
                 videoCapture.Dispose();
-            videoCapture = new Capture();
+            videoCapture = new Capture(1);
             TrainImages();
             numOfLoops = 0;
             timer = new DispatcherTimer();

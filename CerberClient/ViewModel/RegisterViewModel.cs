@@ -162,7 +162,7 @@ namespace CerberClient.ViewModel
         {
             if (videoCapture != null)
                 videoCapture.Dispose();
-            videoCapture = new Capture();
+            videoCapture = new Capture(1);
             numOfLoops = 0;
             timer = new DispatcherTimer();
             timer.Tick += Timer_Tick;
@@ -224,7 +224,7 @@ namespace CerberClient.ViewModel
                             {
                                 Task.Run(() =>
                                 {
-                                    MessageBox.Show("Pomyślnie założono konto");
+                                    MessageBox.Show("Account created");
                                 });
                                 mainViewModel.SwapPage("login");
                             }
@@ -234,7 +234,7 @@ namespace CerberClient.ViewModel
                                
                                  Task.Run(() =>
                                  {
-                                     MessageBox.Show("Rejestracja nie powiodła się");
+                                     MessageBox.Show("Sign up failed");
                                  });
                             }
                             IsOpen = false;

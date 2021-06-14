@@ -50,6 +50,7 @@ namespace CerberClient.ViewModel
         private CameraWatcher cameraWatcher = new CameraWatcher();
         private Task forceStop;
         private IAccount account;
+        private bool closed = true;
 
         public BitmapSource CameraView
         {
@@ -228,14 +229,14 @@ namespace CerberClient.ViewModel
                             IsInOrganization = false;
                             Task.Run(() =>
                             {
-                                MessageBox.Show("Pomyślnie dołączono do organizacji");
+                                MessageBox.Show("Joinded organisation");
                             });
                         }
                         else
                         {
                             Task.Run(() =>
                             {
-                                MessageBox.Show("Nie można dołączyć do organizacji");
+                                MessageBox.Show("Cannot join organisation");
                             });
                         }
                     });
@@ -281,7 +282,7 @@ namespace CerberClient.ViewModel
         {
             if (videoCapture != null)
                 videoCapture.Dispose();
-            videoCapture = new Capture();
+            videoCapture = new Capture(1);
             TrainImages();
             numOfLoops = 0;
             timer = new DispatcherTimer();
@@ -361,10 +362,15 @@ namespace CerberClient.ViewModel
             writer = File.AppendText(Directory.GetCurrentDirectory() + @"\Logs\zdarzenia.txt");
             if(numOfNotRecognisedFaces >= 35 || (numOfNotRecognisedFaces > numOfNotFoundFaces && numOfNotRecognisedFaces > numOfRecognisedFaces))
             {
-                Task.Run(() =>
+                if (closed)
                 {
-                    MessageBox.Show("Nie jesteś właścicielem konta");
-                });
+                    Task.Run(() =>
+                    {
+                        closed = false;
+                        MessageBox.Show("Your are not owner of this account!");
+                        closed = true;
+                    });
+                }
                 
                 writer.WriteLine(DateTime.Today.ToString() + " | " + userLogin + " | Inna osoba przed monitorem");
                 cameraWatcher.ProblemStart();
@@ -372,10 +378,16 @@ namespace CerberClient.ViewModel
             }
             if(numOfNotFoundFaces >= 35 || (numOfNotRecognisedFaces < numOfNotFoundFaces && numOfNotFoundFaces > numOfRecognisedFaces))
             {
-                Task.Run(() =>
+                if (closed)
                 {
-                    MessageBox.Show("Nie ma nikogo przed monitorem");
-                });
+                    Task.Run(() =>
+                    {
+                        closed = false;
+                        MessageBox.Show("No one in front of screen!");
+                        closed = true;
+                    });
+                }
+                
                 writer.WriteLine(DateTime.Today.ToString() + " | " + userLogin + " | Nie ma nikogo przed monitorem");
                 cameraWatcher.ProblemStart();
             }

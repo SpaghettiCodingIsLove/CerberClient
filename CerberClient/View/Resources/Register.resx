@@ -118,24 +118,24 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="createAccount" xml:space="preserve">
-    <value>Załóż konto</value>
+    <value>Sign up</value>
   </data>
   <data name="email" xml:space="preserve">
     <value>Email</value>
   </data>
   <data name="image" xml:space="preserve">
-    <value>Zdjęcie</value>
+    <value>Photo</value>
   </data>
   <data name="lastName" xml:space="preserve">
-    <value>Nazwisko</value>
+    <value>Last name</value>
   </data>
   <data name="name" xml:space="preserve">
-    <value>Imię</value>
+    <value>First name</value>
   </data>
   <data name="password" xml:space="preserve">
-    <value>Hasło</value>
+    <value>Password</value>
   </data>
   <data name="welcomeText" xml:space="preserve">
-    <value>Załóż nowe konto</value>
+    <value>Create new account</value>
   </data>
 </root>
